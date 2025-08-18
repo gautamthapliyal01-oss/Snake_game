@@ -1,36 +1,28 @@
 <!doctype html>
-<html lang="hi">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tic-Tac-Toe — GameZone</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .ttt{display:grid;gap:10px;justify-items:center}
-    .board{display:grid;grid-template-columns:repeat(3,100px);gap:8px}
-    .cell{
-      width:100px;height:100px;display:grid;place-items:center;
-      font-size:46px;font-weight:700;border-radius:12px;
-      background:#14183b;border:1px solid rgba(255,255,255,.1); cursor:pointer;
-    }
-    .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-    .status{color:var(--muted)}
-  </style>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tic-Tac-Toe • Gautam</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="bg">
   <div class="page">
-    <a class="back" href="index.html">← Home</a>
-    <h2>⭕❌ Tic-Tac-Toe (vs 🤖)</h2>
-    <div class="ttt">
-      <div class="row">
-        <button class="btn" id="new">New Game</button>
-        <select class="btn" id="level">
-          <option value="e">Easy Bot</option>
-          <option value="n" selected>Normal Bot</option>
-        </select>
+    <a class="back btn" href="index.html">← Home</a>
+    <h1 class="page-title">Tic-Tac-Toe vs Robot</h1>
+    <div class="row" style="gap:18px;align-items:flex-start">
+      <div class="panel">
+        <div class="ttt-grid" id="grid"></div>
+        <div style="margin-top:12px" class="controls">
+          <button id="resetTTT" class="btn">Restart</button>
+          <select id="tttLevel" class="btn" style="margin-left:8px">
+            <option value="hard" selected>Hard (optimal)</option>
+            <option value="easy">Easy</option>
+          </select>
+        </div>
       </div>
-      <div class="status" id="status">Your turn (X)</div>
-      <div class="board" id="board"></div>
+      <div class="panel info">
+        <div class="badge">You: X — Bot: O</div>
+        <p class="note" id="tttStatus" style="margin-top:12px"></p>
+      </div>
     </div>
   </div>
   <script src="tictactoe.js"></script>
