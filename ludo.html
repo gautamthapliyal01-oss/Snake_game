@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ludo Lite — GameZone</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="index.html">← Home</a>
+    <h2>🎲 Ludo Lite (Local)</h2>
+    <div class="ludo-wrap">
+      <canvas id="ludo" width="480" height="480"></canvas>
+      <div class="row">
+        <button class="btn" id="roll">Roll Dice</button>
+        <span class="btn" id="dice">🎲 –</span>
+        <button class="btn" id="reset">Reset</button>
+      </div>
+      <div class="notice" id="turn"></div>
+      <div class="notice">Note: Simplified rules for smooth mobile play.</div>
+    </div>
+  </div>
+  <script src="ludo.js"></script>
+</body>
+</html>
