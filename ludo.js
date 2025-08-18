@@ -1,59 +1,84 @@
-const cvs=document.getElementById('ludo'), ctx=cvs.getContext('2d');
-const N=11, S=cvs.width/N; const colors=['#ef4444','#22c55e','#3b82f6','#f59e0b']; const names=['Red','Green','Blue','Yellow'];
-const track=[], homes=[]; let players=4, tokens=[], turn=0, dice=0;
+// Ludo Lite: small, 4 players, 1 token each for fast play
+const canvas = document.getElementById('ludoCanvas');
+const ctxL = canvas.getContext('2d');
+const rollBtn = document.getElementById('rollBtn');
+const resetBtn = document.getElementById('resetBtn');
+const lTurn = document.getElementById('lTurn');
 
-function makeTrack(){ const p=[]; for(let i=1;i<=9;i++)p.push([i,0]); for(let i=1;i<=9;i++)p.push([10,i]);
-  for(let i=9;i>=1;i--)p.push([i,10]); for(let i=9;i>=1;i--)p.push([0,i]); return p.slice(0,40); }
-function homeXY(){ return [[1,1],[9,1],[9,9],[1,9]]; }
-function homePos(p,id){
-  const base=[[1.3,1.3],[2.7,1.3],[1.3,2.7],[2.7,2.7],
-              [8.3,1.3],[9.7,1.3],[8.3,2.7],[9.7,2.7],
-              [8.3,8.3],[9.7,8.3],[8.3,9.7],[9.7,9.7],
-              [1.3,8.3],[2.7,8.3],[1.3,9.7],[2.7,9.7]];
-  return [base[p*4+id][0], base[p*4+id][1]];
-}
-function drawToken(cx,cy,color){
-  ctx.beginPath(); ctx.fillStyle=color; ctx.arc((cx+.5)*S,(cy+.5)*S,S*.36,0,Math.PI*2); ctx.fill();
-  ctx.lineWidth=2; ctx.strokeStyle='rgba(255,255,255,.7)'; ctx.stroke();
+const W = canvas.width;
+const H = canvas.height;
+const N = 11; // grid
+const cell = W / N;
+const colors = ['#ff4d6d','#00d4ff','#ffd166','#6ee7b7'];
+const names = ['Red','Blue','Yellow','Green'];
+
+let track = [];
+let players = [];
+let turn = 0;
+let dice = 0;
+
+function buildTrack(){
+  // build rectangular loop as earlier, simplified
+  const path = [];
+  for(let x=1;x<=9;x++) path.push({x,y:1});
+  for(let y=2;y<=9;y++) path.push({x:9,y});
+  for(let x=8;x>=1;x--) path.push({x,y:9});
+  for(let y=8;y>=2;y--) path.push({x:1,y});
+  // compress to 20-ish points, but we keep all
+  return path.slice(0,28);
 }
 function drawBoard(){
-  ctx.clearRect(0,0,cvs.width,cvs.height);
-  ctx.fillStyle='#0b0e20'; ctx.fillRect(0,0,cvs.width,cvs.height);
-  ctx.strokeStyle='rgba(255,255,255,.06)';
-  for(let i=0;i<=N;i++){ ctx.beginPath(); ctx.moveTo(i*S,0); ctx.lineTo(i*S,cvs.height); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0,i*S); ctx.lineTo(cvs.width,i*S); ctx.stroke(); }
-  track.forEach(([x,y],i)=>{ ctx.fillStyle=i%2?'rgba(255,255,255,.05)':'rgba(255,255,255,.02)'; ctx.fillRect(x*S,y*S,S,S); });
-  homeXY().forEach((xy,i)=>{ ctx.fillStyle=colors[i]; ctx.globalAlpha=.3; ctx.fillRect(xy[0]*S,xy[1]*S,S*2,S*2); ctx.globalAlpha=1; });
-  tokens.forEach(t=>{ const [x,y]=t.pos===-1? homePos(t.p,t.id): track[(homes[t.p]+t.pos)%40]; drawToken(x,y,colors[t.p]); });
-}
-function init(playersCount=4){
-  players=playersCount; track.length=0; makeTrack().forEach(c=>track.push(c));
-  homes.length=0; homes.push(0,10,20,30);
-  tokens=[]; for(let p=0;p<players;p++) for(let k=0;k<2;k++) tokens.push({p,id:k,pos:-1,finished:false});
-  turn=0; dice=0; updateUI(); drawBoard();
-}
-function updateUI(){ document.getElementById('turn').textContent=`Turn: ${names[turn]} — ${dice?('Dice: '+dice):'roll to play'}`; document.getElementById('dice').textContent=`🎲 ${dice||'-'}`; }
-function roll(){ dice=Math.floor(Math.random()*6)+1; updateUI();
-  const can=tokens.some(t=>t.p===turn && (t.pos===-1? dice===6 : !t.finished)); if(!can){ next(); } drawBoard(); }
-function next(){ dice=0; turn=(turn+1)%players; updateUI(); }
-cvs.addEventListener('click',e=>{
-  if(!dice) return;
-  const r=cvs.getBoundingClientRect(), x=Math.floor((e.clientX-r.left)/S), y=Math.floor((e.clientY-r.top)/S);
-  let pick=null;
-  tokens.filter(t=>t.p===turn && !t.finished).forEach(t=>{
-    const [cx,cy]=t.pos===-1? homePos(t.p,t.id): track[(homes[t.p]+t.pos)%40];
-    const d=Math.hypot((x+.5)-(cx+.5),(y+.5)-(cy+.5)); if(d<.5) pick=t;
+  ctxL.clearRect(0,0,W,H);
+  ctxL.fillStyle='#071217'; ctxL.fillRect(0,0,W,H);
+  // draw track
+  track.forEach((p,i)=>{
+    ctxL.fillStyle = (i%2)? 'rgba(255,255,255,.02)': 'rgba(255,255,255,.03)';
+    ctxL.fillRect(p.x*cell, p.y*cell, cell, cell);
+    ctxL.strokeStyle='rgba(255,255,255,.04)'; ctxL.strokeRect(p.x*cell, p.y*cell, cell, cell);
   });
-  if(!pick) return;
-  if(pick.pos===-1){ if(dice!==6) return; pick.pos=0; }
-  else { pick.pos+=dice; if(pick.pos>=40){ pick.finished=true; } }
-  const myAbs=(homes[pick.p]+pick.pos)%40;
-  tokens.forEach(t=>{
-    if(t===pick||t.pos===-1||t.finished) return;
-    const theirAbs=(homes[t.p]+t.pos)%40; if(myAbs===theirAbs && t.p!==pick.p) t.pos=-1;
+  // draw players
+  players.forEach((pl,idx)=>{
+    const pos = pl.pos===-1 ? pl.home : track[pl.pos % track.length];
+    const cx = (pos.x + 0.5) * cell, cy = (pos.y + 0.5) * cell;
+    ctxL.beginPath(); ctxL.fillStyle = pl.color; ctxL.arc(cx,cy,cell*0.35,0,Math.PI*2); ctxL.fill();
+    ctxL.strokeStyle='rgba(0,0,0,.4)'; ctxL.stroke();
   });
-  drawBoard(); if(dice===6){ dice=0; updateUI(); return; } next();
-});
-document.getElementById('roll').onclick=roll;
-document.getElementById('reset').onclick=()=>init(players);
-init(4);
+}
+function initLudo(){
+  track = buildTrack();
+  // home positions approximate inside board (choose safe spots)
+  players = [
+    {color:colors[0], pos:-1, home:{x:1,y:1}},
+    {color:colors[1], pos:14, home:{x:9,y:1}},
+    {color:colors[2], pos:7, home:{x:9,y:9}},
+    {color:colors[3], pos:21, home:{x:1,y:9}},
+  ];
+  turn = 0; dice = 0;
+  lTurn.textContent = names[turn];
+  drawBoard();
+}
+function rollDice(){
+  dice = Math.floor(Math.random()*6)+1;
+  // move current if possible
+  const cur = players[turn];
+  if(cur.pos === -1){
+    if(dice === 6){ cur.pos = 0; } else { nextTurn(); return; }
+  } else {
+    cur.pos = (cur.pos + dice) % track.length;
+  }
+  // capture - if any other on same absolute pos and not safe index, send home
+  players.forEach((p, i)=>{
+    if(i===turn) return;
+    if(p.pos !== -1 && players[turn].pos === p.pos){
+      p.pos = -1; // send home
+    }
+  });
+  drawBoard();
+  // extra turn on 6
+  if(dice !== 6) nextTurn();
+}
+function nextTurn(){ turn = (turn+1) % players.length; lTurn.textContent = names[turn]; }
+rollBtn.onclick = rollDice;
+resetBtn.onclick = initLudo;
+
+initLudo();
