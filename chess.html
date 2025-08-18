@@ -1,28 +1,30 @@
 <!doctype html>
-<html lang="hi">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Chess — GameZone</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Chess • Gautam GameZone</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- chessboard.js + chess.js from CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
 </head>
-<body>
+<body class="bg">
   <div class="page">
-    <a class="back" href="index.html">← Home</a>
-    <h2>♟️ Chess</h2>
-    <div id="chess-area">
-      <div id="board"></div>
-      <div style="max-width:420px;">
-        <div class="row" style="margin-bottom:10px">
-          <button class="btn" id="new">New Game</button>
-          <button class="btn" id="flip">Flip</button>
+    <a class="back btn" href="index.html">← Home</a>
+    <h1 class="page-title">♟️ Chess (You vs Bot)</h1>
+
+    <div class="row">
+      <div id="chessBoard" class="panel" style="width:420px"></div>
+      <div class="panel info">
+        <div class="badge">Turn: <span id="turnName">White</span></div>
+        <div style="margin-top:10px" class="controls">
+          <button id="newGame" class="btn">New Game</button>
+          <button id="flipBoard" class="btn">Flip</button>
+          <select id="aiLevel" class="btn"><option value="1">Easy</option><option value="2" selected>Normal</option><option value="3">Hard</option></select>
         </div>
-        <p class="status" id="status">Your move (white)</p>
-        <textarea id="fen" class="btn" rows="3" readonly></textarea>
+        <p class="note" id="chessStatus" style="margin-top:12px"></p>
       </div>
     </div>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
   <script src="chess.js"></script>
