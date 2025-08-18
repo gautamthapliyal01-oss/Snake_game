@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ludo Game</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .ludo {
+      margin: 50px auto;
+      text-align: center;
+    }
+    #dice {
+      font-size: 3rem;
+      margin: 20px;
+      padding: 20px;
+      border: 2px solid white;
+      border-radius: 15px;
+      display: inline-block;
+      background: #ff5722;
+    }
+    .btn-roll {
+      background: #4caf50;
+      padding: 15px 25px;
+      font-size: 1.2rem;
+      border-radius: 10px;
+      cursor: pointer;
+      border: none;
+      color: white;
+      margin: 15px;
+    }
+    .btn-roll:hover {
+      background: #388e3c;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎲 Ludo Dice Game</h1>
+  <div class="ludo">
+    <h2 id="turn">Player 1's Turn</h2>
+    <div id="dice">🎲</div><br>
+    <button class="btn-roll" onclick="rollDice()">Roll Dice</button>
+  </div>
+  <p><a class="btn" href="index.html">⬅️ Back</a></p>
+
+  <script>
+    let turn = 1;
+
+    function rollDice() {
+      let roll = Math.floor(Math.random() * 6) + 1;
+      document.getElementById("dice").textContent = roll;
+
+      if (turn === 1) {
+        document.getElementById("turn").textContent = "Player 2's Turn";
+        turn = 2;
+      } else {
+        document.getElementById("turn").textContent = "Player 1's Turn";
+        turn = 1;
+      }
+    }
+  </script>
+</body>
+</html>
