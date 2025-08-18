@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chess — GameZone</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="index.html">← Home</a>
+    <h2>♟️ Chess</h2>
+    <div id="chess-area">
+      <div id="board"></div>
+      <div style="max-width:420px;">
+        <div class="row" style="margin-bottom:10px">
+          <button class="btn" id="new">New Game</button>
+          <button class="btn" id="flip">Flip</button>
+        </div>
+        <p class="status" id="status">Your move (white)</p>
+        <textarea id="fen" class="btn" rows="3" readonly></textarea>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+  <script src="chess.js"></script>
+</body>
+</html>
