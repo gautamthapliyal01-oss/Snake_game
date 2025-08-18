@@ -3,28 +3,152 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Snake Game 🐍</title>
+  <title>My Cool Website</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      color: white;
+      text-align: center;
+    }
+    header {
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;
+      color: #ffcc00;
+    }
+    nav {
+      margin-top: 10px;
+    }
+    nav a {
+      text-decoration: none;
+      margin: 0 15px;
+      color: #fff;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      color: #ffcc00;
+    }
+    section {
+      padding: 30px;
+    }
+    canvas {
+      background: #111;
+      border: 2px solid #ffcc00;
+      margin-top: 20px;
+    }
+    footer {
+      padding: 15px;
+      margin-top: 30px;
+      background: rgba(0,0,0,0.5);
+    }
+  </style>
 </head>
 <body>
   <header>
-    <h1>🐍 Snake Game</h1>
+    <h1>🚀 My Awesome Website</h1>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="snake.html">Play Game</a>
+      <a href="#home">Home</a>
+      <a href="#game">Snake Game</a>
     </nav>
   </header>
 
-  <main>
-    <section class="hero">
-      <h2>Welcome to My Awesome Website 🚀</h2>
-      <p>Enjoy playing Snake Game online. More features coming soon!</p>
-      <a href="snake.html" class="btn">🎮 Play Now</a>
-    </section>
-  </main>
+  <section id="home">
+    <h2>Welcome!</h2>
+    <p>Yeh mera pehla mast interface website hai 🎉</p>
+  </section>
+
+  <section id="game">
+    <h2>🎮 Snake Game</h2>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+  </section>
 
   <footer>
-    <p>© 2025 Gautam. Built with ❤️</p>
+    <p>Made with ❤️ by Gautam</p>
   </footer>
+
+  <script>
+    // Snake Game JavaScript
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let box = 20;
+    let snake = [{x: 9 * box, y: 10 * box}];
+    let direction;
+    let food = {
+      x: Math.floor(Math.random() * 19 + 1) * box,
+      y: Math.floor(Math.random() * 19 + 1) * box
+    };
+    document.addEventListener("keydown", dir);
+
+    function dir(event) {
+      if (event.keyCode == 37 && direction != "RIGHT") direction = "LEFT";
+      else if (event.keyCode == 38 && direction != "DOWN") direction = "UP";
+      else if (event.keyCode == 39 && direction != "LEFT") direction = "RIGHT";
+      else if (event.keyCode == 40 && direction != "UP") direction = "DOWN";
+    }
+
+    function draw() {
+      ctx.fillStyle = "#222";
+      ctx.fillRect(0, 0, 400, 400);
+
+      for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = i == 0 ? "#ffcc00" : "white";
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+        ctx.strokeStyle = "#111";
+        ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+      }
+
+      ctx.fillStyle = "red";
+      ctx.fillRect(food.x, food.y, box, box);
+
+      let snakeX = snake[0].x;
+      let snakeY = snake[0].y;
+
+      if (direction == "LEFT") snakeX -= box;
+      if (direction == "UP") snakeY -= box;
+      if (direction == "RIGHT") snakeX += box;
+      if (direction == "DOWN") snakeY += box;
+
+      if (snakeX == food.x && snakeY == food.y) {
+        food = {
+          x: Math.floor(Math.random() * 19 + 1) * box,
+          y: Math.floor(Math.random() * 19 + 1) * box
+        };
+      } else {
+        snake.pop();
+      }
+
+      let newHead = {x: snakeX, y: snakeY};
+
+      if (
+        snakeX < 0 || snakeY < 0 ||
+        snakeX >= 400 || snakeY >= 400 ||
+        collision(newHead, snake)
+      ) {
+        clearInterval(game);
+        alert("Game Over 😢");
+      }
+
+      snake.unshift(newHead);
+    }
+
+    function collision(head, array) {
+      for (let i = 0; i < array.length; i++) {
+        if (head.x == array[i].x && head.y == array[i].y) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    let game = setInterval(draw, 100);
+  </script>
 </body>
 </html>
