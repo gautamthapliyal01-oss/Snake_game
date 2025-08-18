@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Snake — GameZone</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="index.html">← Home</a>
+    <h2>🐍 Snake</h2>
+    <div class="snake-wrap">
+      <canvas id="snake" width="420" height="420"></canvas>
+      <div class="score"><b>Score:</b> <span id="score">0</span></div>
+      <div class="controls">
+        <span></span><button class="btn" id="up">↑</button><span></span>
+        <button class="btn" id="left">←</button>
+        <button class="btn" id="down">↓</button>
+        <button class="btn" id="right">→</button>
+        <button class="btn" id="restart" style="grid-column:1/4">Restart</button>
+      </div>
+    </div>
+  </div>
+  <script src="snake.js"></script>
+</body>
+</html>
