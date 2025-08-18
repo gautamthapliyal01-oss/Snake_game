@@ -1,32 +1,70 @@
-<!doctype html>
-<html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Chess • Gautam GameZone</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- chessboard.js + chess.js from CDN -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" />
-</head>
-<body class="bg">
-  <div class="page">
-    <a class="back btn" href="index.html">← Home</a>
-    <h1 class="page-title">♟️ Chess (You vs Bot)</h1>
 
-    <div class="row">
-      <div id="chessBoard" class="panel" style="width:420px"></div>
-      <div class="panel info">
-        <div class="badge">Turn: <span id="turnName">White</span></div>
-        <div style="margin-top:10px" class="controls">
-          <button id="newGame" class="btn">New Game</button>
-          <button id="flipBoard" class="btn">Flip</button>
-          <select id="aiLevel" class="btn"><option value="1">Easy</option><option value="2" selected>Normal</option><option value="3">Hard</option></select>
-        </div>
-        <p class="note" id="chessStatus" style="margin-top:12px"></p>
-      </div>
-    </div>
-  </div>
+// TicTacToe with minimax bot (optimal or easy random)
+const gridEl = document.getElementById('grid');
+const statusEl = document.getElementById('tttStatus');
+const resetBtn = document.getElementById('resetTTT');
+const levelSel = document.getElementById('tttLevel');
 
-  <script src="https://cdn.jsdelivr.net/npm/chess.js@0.13.4/chess.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
-  <script src="chess.js"></script>
-</body>
-</html>
+let board, gameOver;
+
+function initTTT(){
+  board = Array(9).fill('');
+  gameOver = false;
+  gridEl.innerHTML = '';
+  for(let i=0;i<9;i++){
+    const btn = document.createElement('button'); btn.className='ttt-cell'; btn.dataset.i=i; btn.textContent='';
+    btn.onclick = ()=>playerMove(i);
+    gridEl.appendChild(btn);
+  }
+  statusEl.textContent = "Your turn (X)";
+}
+function lines(){ return [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]; }
+function winner(b){
+  for(const [a,b1,c] of lines()) if(b[a] && b[a]===b[b1] && b[a]===b[c]) return b[a];
+  if(b.every(v=>v)) return 'draw';
+  return null;
+}
+function render(){
+  [...gridEl.children].forEach((c,i)=>c.textContent = board[i]);
+}
+function playerMove(i){
+  if(gameOver || board[i]) return;
+  board[i] = 'X'; render();
+  const w = winner(board);
+  if(w){ endTTT(w); return; }
+  setTimeout(botMove, 220);
+}
+function botMove(){
+  const lvl = levelSel.value;
+  let i;
+  if(lvl==='easy'){
+    const free = board.map((v,idx)=>v?null:idx).filter(v=>v!==null);
+    i = free[Math.floor(Math.random()*free.length)];
+  } else {
+    i = bestMove(board, 'O').i;
+  }
+  board[i] = 'O'; render();
+  const w = winner(board); if(w) endTTT(w);
+}
+function endTTT(w){ gameOver = true; statusEl.textContent = (w==='draw')? 'Draw!' : (w==='X'?'You win 🎉':'Bot wins 🤖'); }
+
+function bestMove(b, player){
+  const w = winner(b);
+  if(w==='X') return {score:-10};
+  if(w==='O') return {score:10};
+  if(w==='draw') return {score:0};
+  const moves = [];
+  for(let i=0;i<9;i++){
+    if(!b[i]){
+      b[i] = player;
+      const res = bestMove(b, player === 'O' ? 'X' : 'O');
+      moves.push({i, score: res.score});
+      b[i] = '';
+    }
+  }
+  if(player === 'O') return moves.reduce((a,m)=> m.score > a.score ? m : a, {score:-999});
+  else return moves.reduce((a,m)=> m.score < a.score ? m : a, {score:999});
+}
+
+resetBtn.onclick = initTTT;
+initTTT();
