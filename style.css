@@ -1,0 +1,54 @@
+:root{
+  --bg: #0f1226; --card:#171b3a; --accent:#8b5cf6; --accent2:#22d3ee;
+  --text:#e6e7ff; --muted:#a8b0ff;
+}
+*{box-sizing:border-box} html,body{margin:0;height:100%}
+body{
+  font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Arial;
+  color:var(--text);
+  background:
+    radial-gradient(60vmax 60vmax at 10% -10%, rgba(34,211,238,.25), transparent 60%),
+    radial-gradient(60vmax 60vmax at 110% 10%, rgba(139,92,246,.20), transparent 60%),
+    linear-gradient(180deg,#0b0e20,#0f1226 50%,#0b0e20);
+  min-height:100%;
+}
+.topbar{ text-align:center; padding:26px 16px 8px; }
+.topbar h1{margin:0;font-size:2.1rem}
+.topbar p{margin:6px 0 0;color:var(--muted)}
+.grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:18px; padding:20px; max-width:1100px; margin:0 auto 20px;
+}
+.card{
+  display:block; background:linear-gradient(180deg,var(--card),#131735);
+  border:1px solid rgba(255,255,255,.06); border-radius:18px; padding:22px;
+  text-decoration:none; color:var(--text);
+  box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.04);
+  transition:transform .2s, box-shadow .2s, border-color .2s;
+}
+.card:hover{ transform:translateY(-4px); border-color:rgba(139,92,246,.5);
+  box-shadow:0 16px 40px rgba(139,92,246,.25); }
+.card .icon{
+  font-size:42px; width:64px; height:64px; display:grid; place-items:center;
+  background:linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius:16px; margin-bottom:14px; box-shadow:0 8px 18px rgba(34,211,238,.25);
+}
+.card h2{margin:4px 0 6px; font-size:1.25rem} .card p{margin:0;color:var(--muted)}
+.page{ max-width:960px;margin:18px auto;padding:16px; }
+.back{ color:var(--muted); text-decoration:none; display:inline-flex; gap:8px; margin-bottom:12px }
+.btn{
+  border:1px solid rgba(255,255,255,.12); background:#1a1e40; color:var(--text);
+  padding:10px 14px; border-radius:12px; font-weight:600; cursor:pointer;
+  transition:transform .1s, background .2s;
+}
+.btn:hover{ background:#1f2450 } .btn:active{ transform:scale(.98) }
+.snake-wrap{display:grid; gap:12px; justify-items:center}
+canvas{background:#0b0e20;border:1px solid rgba(255,255,255,.1);border-radius:12px}
+.controls{ display:grid; gap:10px; grid-template-columns:repeat(3,70px); justify-content:center; margin-top:6px }
+.controls .btn{height:52px}
+.score{margin:6px 0 0; color:var(--muted)}
+#chess-area{display:flex; gap:16px; flex-wrap:wrap; align-items:flex-start}
+#board{max-width:480px; width:100%} #fen{width:100%}
+.ludo-wrap{display:grid; gap:12px; justify-items:center}
+.notice{color:var(--muted); font-size:.95rem}
+.foot{ text-align:center; color:#9aa3ff80; padding:14px }
