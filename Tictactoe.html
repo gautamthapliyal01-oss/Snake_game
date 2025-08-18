@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tic-Tac-Toe — GameZone</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .ttt{display:grid;gap:10px;justify-items:center}
+    .board{display:grid;grid-template-columns:repeat(3,100px);gap:8px}
+    .cell{
+      width:100px;height:100px;display:grid;place-items:center;
+      font-size:46px;font-weight:700;border-radius:12px;
+      background:#14183b;border:1px solid rgba(255,255,255,.1); cursor:pointer;
+    }
+    .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+    .status{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="index.html">← Home</a>
+    <h2>⭕❌ Tic-Tac-Toe (vs 🤖)</h2>
+    <div class="ttt">
+      <div class="row">
+        <button class="btn" id="new">New Game</button>
+        <select class="btn" id="level">
+          <option value="e">Easy Bot</option>
+          <option value="n" selected>Normal Bot</option>
+        </select>
+      </div>
+      <div class="status" id="status">Your turn (X)</div>
+      <div class="board" id="board"></div>
+    </div>
+  </div>
+  <script src="tictactoe.js"></script>
+</body>
+</html>
