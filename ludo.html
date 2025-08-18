@@ -1,24 +1,25 @@
 <!doctype html>
-<html lang="hi">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Ludo Lite — GameZone</title>
-  <link rel="stylesheet" href="style.css" />
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ludo Lite • Gautam</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="bg">
   <div class="page">
-    <a class="back" href="index.html">← Home</a>
-    <h2>🎲 Ludo Lite (Local)</h2>
-    <div class="ludo-wrap">
-      <canvas id="ludo" width="480" height="480"></canvas>
-      <div class="row">
-        <button class="btn" id="roll">Roll Dice</button>
-        <span class="btn" id="dice">🎲 –</span>
-        <button class="btn" id="reset">Reset</button>
+    <a class="back btn" href="index.html">← Home</a>
+    <h1 class="page-title">Ludo Lite</h1>
+
+    <div class="row" style="align-items:flex-start;gap:18px">
+      <canvas id="ludoCanvas" width="520" height="520" class="panel"></canvas>
+      <div class="panel info">
+        <div class="badge">Turn: <span id="lTurn">Red</span></div>
+        <div style="margin-top:10px" class="controls">
+          <button id="rollBtn" class="btn">Roll Dice</button>
+          <button id="resetBtn" class="btn">Reset</button>
+          <button onclick="location.href='index.html'" class="btn">🏠 Home</button>
+        </div>
+        <div style="margin-top:12px" class="note">Lite rules: 1 token each player; roll 6 to move out of home; capture allowed.</div>
       </div>
-      <div class="notice" id="turn"></div>
-      <div class="notice">Note: Simplified rules for smooth mobile play.</div>
     </div>
   </div>
   <script src="ludo.js"></script>
