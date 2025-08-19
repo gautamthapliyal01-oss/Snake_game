@@ -2,115 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chess Game</title>
-  <link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
-  <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background: linear-gradient(120deg, #74ebd5, #9face6);
-      font-family: Arial, sans-serif;
-    }
-    h1 {
-      margin-bottom: 20px;
-      color: #fff;
-    }
-    #board {
-      width: 400px;
-      margin-bottom: 20px;
-    }
-    #status {
-      font-size: 18px;
-      color: white;
-    }
-    button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background: #333;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #555;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.12.0/chess.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css"/>
 </head>
 <body>
-  <h1>♟️ Chess with AI</h1>
-  <div id="board"></div>
-  <div id="status"></div>
-  <button onclick="restartGame()">Restart Game</button>
-
-  <!-- Libraries -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.min.js"></script>
-  <script src="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
-
-  <script>
-    let board = null;
-    let game = new Chess();
-
-    function makeRandomMove() {
-      const possibleMoves = game.moves();
-      if (possibleMoves.length === 0) return;
-
-      const randomIdx = Math.floor(Math.random() * possibleMoves.length);
-      game.move(possibleMoves[randomIdx]);
-      board.position(game.fen());
-      updateStatus();
-    }
-
-    function onDragStart(source, piece) {
-      if (game.game_over()) return false;
-      if (piece.startsWith('b')) return false; // only white moves (AI is black)
-    }
-
-    function onDrop(source, target) {
-      const move = game.move({
-        from: source,
-        to: target,
-        promotion: 'q'
-      });
-
-      if (move === null) return 'snapback';
-
-      updateStatus();
-
-      window.setTimeout(makeRandomMove, 500); // AI plays after 0.5s
-    }
-
-    function updateStatus() {
-      let status = '';
-
-      if (game.in_checkmate()) {
-        status = 'Game over, ' + (game.turn() === 'w' ? 'Black' : 'White') + ' wins!';
-      } else if (game.in_draw()) {
-        status = 'Game over, draw!';
-      } else {
-        status = (game.turn() === 'w' ? 'White' : 'Black') + ' to move';
-      }
-
-      document.getElementById('status').innerHTML = status;
-    }
-
-    function restartGame() {
-      game = new Chess();
-      board.start();
-      updateStatus();
-    }
-
-    board = Chessboard('board', {
-      draggable: true,
-      position: 'start',
-      onDragStart: onDragStart,
-      onDrop: onDrop
-    });
-
-    updateStatus();
-  </script>
+  <div id="board" style="width: 350px; margin: auto;"></div>
+  <p id="status" style="text-align:center; font-weight: bold; margin-top: 10px;"></p>
+  <script src="chess.js"></script>
 </body>
 </html>
