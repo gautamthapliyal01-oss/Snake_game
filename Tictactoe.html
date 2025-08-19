@@ -1,30 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Tic-Tac-Toe • Gautam</title>
-  <link rel="stylesheet" href="style.css">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic-Tac-Toe</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .wrap{display:flex;flex-direction:column;align-items:center;padding:16px}
+  .grid{display:grid;grid-template-columns:repeat(3,90px);gap:8px;margin:10px 0}
+  .cell{width:90px;height:90px;background:#0b1624;border:1px solid #2a4f86;border-radius:12px;
+        display:flex;align-items:center;justify-content:center;font-size:46px;color:#6ecbff}
+  .row{display:flex;gap:10px;margin-top:8px}
+  .msg{color:#a7c3ff;margin-top:6px;height:22px}
+</style>
 </head>
-<body class="bg">
-  <div class="page">
-    <a class="back btn" href="index.html">← Home</a>
-    <h1 class="page-title">Tic-Tac-Toe vs Robot</h1>
-    <div class="row" style="gap:18px;align-items:flex-start">
-      <div class="panel">
-        <div class="ttt-grid" id="grid"></div>
-        <div style="margin-top:12px" class="controls">
-          <button id="resetTTT" class="btn">Restart</button>
-          <select id="tttLevel" class="btn" style="margin-left:8px">
-            <option value="hard" selected>Hard (optimal)</option>
-            <option value="easy">Easy</option>
-          </select>
-        </div>
-      </div>
-      <div class="panel info">
-        <div class="badge">You: X — Bot: O</div>
-        <p class="note" id="tttStatus" style="margin-top:12px"></p>
-      </div>
-    </div>
+<body>
+<div class="wrap">
+  <div class="msg" id="status"></div>
+  <div class="grid" id="grid"></div>
+  <div class="row">
+    <a class="play-btn" href="#" id="new">New Game</a>
+    <a class="play-btn" href="index.html">Home</a>
   </div>
-  <script src="tictactoe.js"></script>
+</div>
+<script src="tictactoe.js"></script>
 </body>
 </html>
