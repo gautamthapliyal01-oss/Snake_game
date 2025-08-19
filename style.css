@@ -1,34 +1,82 @@
+/* Background */
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
+  font-family: 'Poppins', sans-serif;
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   color: #fff;
-  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* Grid layout */
 .container {
   display: grid;
-  gap: 20px;
-  padding: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  padding: 3rem 1rem;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
 }
 
+/* Game Cards */
 .game-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
-.game-icon {
-  width: 60px;   /* 👈 Pehle bade the, ab chhote kar diye */
-  height: 60px;
-  margin-bottom: 10px;
+.game-card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
+/* Game Icons */
+.game-card img {
+  width: 70px;  /* thoda chhota kiya */
+  height: 70px;
+  margin-bottom: 1rem;
+}
+
+/* Game Titles */
+.game-card h2 {
+  margin: 0.5rem 0;
+  font-size: 1.4rem;
+}
+
+/* Description */
+.game-card p {
+  font-size: 0.95rem;
+  opacity: 0.8;
+  margin-bottom: 1.5rem;
+}
+
+/* Play Button */
+.play-btn {
+  display: inline-block;
+  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  padding: 0.7rem 1.5rem;
+  border-radius: 30px;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.play-btn:hover {
+  background: linear-gradient(45deg, #2575fc, #6a11cb);
+  transform: scale(1.05);
+}
+
+/* Footer */
 footer {
-  margin-top: 30px;
-  padding: 10px;
-  font-size: 14px;
-  color: #ccc;
+  margin: 2rem 0;
+  font-size: 0.9rem;
+  opacity: 0.7;
+  text-align: center;
 }
