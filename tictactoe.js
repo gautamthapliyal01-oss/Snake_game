@@ -1,27 +1,61 @@
-const boardEl=document.getElementById('board'), statusEl=document.getElementById('status'), levelEl=document.getElementById('level');
-let cells, board, human='X', ai='O', over=false;
-function makeBoard(){
-  boardEl.innerHTML=''; board=Array(9).fill(''); over=false;
-  for(let i=0;i<9;i++){ const d=document.createElement('button'); d.className='cell'; d.dataset.i=i; d.onclick=()=>move(i); boardEl.appendChild(d); }
-  cells=[...document.querySelectorAll('.cell')]; statusEl.textContent='Your turn (X)';
+const grid = document.getElementById('grid');
+const statusEl = document.getElementById('status');
+let board, human='X', ai='O', over=false;
+
+function init(){
+  board = Array(9).fill('');
+  grid.innerHTML = '';
+  for(let i=0;i<9;i++){
+    const d=document.createElement('div');
+    d.className='cell'; d.dataset.i=i;
+    d.onclick = ()=>move(i);
+    grid.appendChild(d);
+  }
+  over=false; statusEl.textContent = "You: X  |  Bot: O";
 }
-const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-function winner(b){ for(const [a,c,d] of wins) if(b[a]&&b[a]===b[c]&&b[a]===b[d]) return b[a]; return b.every(v=>v)?'draw':null; }
-function move(i){ if(over||board[i]) return; board[i]=human; cells[i].textContent=human; let w=winner(board); if(w) return end(w); bot(); }
-function end(w){ over=true; statusEl.textContent=w==='draw'?'Draw!':(w===human?'You win!':'Bot wins!'); }
-function bot(){
-  const mode=levelEl.value; let i;
-  if(mode==='e'){ const free=board.map((v,idx)=>v?null:idx).filter(v=>v!==null); i=free[Math.floor(Math.random()*free.length)]; }
-  else { i=minimax(board, ai).i; }
-  board[i]=ai; cells[i].textContent=ai;
-  const w=winner(board); if(w) end(w); else statusEl.textContent='Your turn (X)';
+document.getElementById('new').onclick=(e)=>{e.preventDefault();init();}
+
+function move(i){
+  if (over || board[i]) return;
+  board[i]=human; render();
+  if (checkWin(board,human)){statusEl.textContent="You win! 🎉"; over=true; return;}
+  if (board.every(x=>x)){statusEl.textContent="Draw!"; over=true; return;}
+  // AI
+  const best = minimax(board, ai).index;
+  board[best]=ai; render();
+  if (checkWin(board,ai)){statusEl.textContent="Bot wins 🤖"; over=true; return;}
+  if (board.every(x=>x)){statusEl.textContent="Draw!"; over=true;}
 }
-function minimax(b, player){
-  const w=winner(b); if(w===ai) return {score:10}; if(w===human) return {score:-10}; if(w==='draw') return {score:0};
-  let best={score: player===ai? -Infinity: Infinity, i:null};
-  for(let i=0;i<9;i++){ if(b[i]) continue; b[i]=player;
-    const r=minimax(b, player===ai? human: ai); b[i]=''; r.i=i;
-    if(player===ai){ if(r.score>best.score) best=r; } else { if(r.score<best.score) best=r; }
-  } return best;
+
+function render(){
+  [...grid.children].forEach((c,i)=> c.textContent = board[i]);
 }
-document.getElementById('new').onclick=makeBoard; makeBoard();
+
+function checkWin(b, p){
+  const w=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  return w.some(([a,b2,c])=> b[a]===p && b[b2]===p && b[c]===p);
+}
+
+function minimax(newBoard, player){
+  const avail = newBoard.map((v,i)=> v===''?i:null).filter(v=>v!==null);
+  if (checkWin(newBoard,human)) return {score:-10};
+  if (checkWin(newBoard,ai)) return {score:10};
+  if (avail.length===0) return {score:0};
+
+  const moves=[];
+  for (let i of avail){
+    const move={index:i};
+    newBoard[i]=player;
+    move.score = minimax(newBoard, player===ai?human:ai).score;
+    newBoard[i]='';
+    moves.push(move);
+  }
+  let bestMove, bestScore = player===ai ? -Infinity : Infinity;
+  moves.forEach((m,idx)=>{
+    if (player===ai && m.score>bestScore){bestScore=m.score; bestMove=idx;}
+    if (player===human && m.score<bestScore){bestScore=m.score; bestMove=idx;}
+  });
+  return moves[bestMove];
+}
+
+init();
