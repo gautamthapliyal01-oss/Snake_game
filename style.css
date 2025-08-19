@@ -1,82 +1,60 @@
-/* Background */
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color: #fff;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* ===== Global ===== */
+*{box-sizing:border-box}
+:root{
+  --bg1:#0e1b2b;
+  --bg2:#152d4a;
+  --card:#0f2036cc;
+  --text:#eaf3ff;
+  --muted:#a7c3ff;
+  --accent1:#4da3ff;
+  --accent2:#7b6cff;
+}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--text);
+  background: radial-gradient(1200px 600px at 20% -10%, #1c3760 0%, transparent 60%),
+              radial-gradient(1000px 500px at 120% 10%, #12243d 0%, transparent 60%),
+              linear-gradient(160deg, var(--bg1), var(--bg2));
+  display:flex;flex-direction:column;align-items:center;
 }
 
-/* Grid layout */
-.container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 2rem;
-  padding: 3rem 1rem;
-  width: 100%;
-  max-width: 1200px;
-  box-sizing: border-box;
+/* ===== Grid ===== */
+.container{
+  width:100%;max-width:1100px;
+  display:grid;gap:1.6rem;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  padding:28px 14px 18px;
 }
 
-/* Game Cards */
-.game-card {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 2rem 1.5rem;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  backdrop-filter: blur(10px);
+/* ===== Cards ===== */
+.game-card{
+  background:var(--card);
+  border:1px solid #1d3b63;
+  border-radius:18px;
+  padding:18px 16px;
+  text-align:center;
+  backdrop-filter: blur(8px);
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
+.game-card:hover{transform:translateY(-6px);box-shadow:0 12px 28px rgba(0,0,0,.45);border-color:#2b5ea0}
 
-.game-card:hover {
-  transform: translateY(-10px) scale(1.03);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+.game-card img{
+  width:58px;height:58px; /* smaller icons for phones */
+  border-radius:14px;display:block;margin:6px auto 10px;
 }
+.game-card h2{margin:6px 0 2px;font-size:1.15rem;letter-spacing:.2px}
+.game-card p{margin:0 0 14px;color:var(--muted);font-size:.92rem}
 
-/* Game Icons */
-.game-card img {
-  width: 70px;  /* thoda chhota kiya */
-  height: 70px;
-  margin-bottom: 1rem;
+/* Buttons */
+.play-btn{
+  display:inline-block;text-decoration:none;color:white;font-weight:600;
+  background: linear-gradient(45deg, var(--accent1), var(--accent2));
+  padding:.55rem 1.1rem;border-radius:999px;
+  transition: transform .18s ease, filter .18s ease;
 }
-
-/* Game Titles */
-.game-card h2 {
-  margin: 0.5rem 0;
-  font-size: 1.4rem;
-}
-
-/* Description */
-.game-card p {
-  font-size: 0.95rem;
-  opacity: 0.8;
-  margin-bottom: 1.5rem;
-}
-
-/* Play Button */
-.play-btn {
-  display: inline-block;
-  background: linear-gradient(45deg, #6a11cb, #2575fc);
-  padding: 0.7rem 1.5rem;
-  border-radius: 30px;
-  color: #fff;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.play-btn:hover {
-  background: linear-gradient(45deg, #2575fc, #6a11cb);
-  transform: scale(1.05);
-}
+.play-btn:hover{transform:scale(1.05);filter:saturate(1.15)}
 
 /* Footer */
-footer {
-  margin: 2rem 0;
-  font-size: 0.9rem;
-  opacity: 0.7;
-  text-align: center;
-}
+footer{margin:16px 0 22px;color:var(--muted);font-size:.9rem;text-align:center}
