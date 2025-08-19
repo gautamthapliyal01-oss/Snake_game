@@ -1,27 +1,18 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Ludo Lite • Gautam</title>
-  <link rel="stylesheet" href="style.css">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ludo (Rebuild)</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px;text-align:center}
+</style>
 </head>
-<body class="bg">
-  <div class="page">
-    <a class="back btn" href="index.html">← Home</a>
-    <h1 class="page-title">Ludo Lite</h1>
-
-    <div class="row" style="align-items:flex-start;gap:18px">
-      <canvas id="ludoCanvas" width="520" height="520" class="panel"></canvas>
-      <div class="panel info">
-        <div class="badge">Turn: <span id="lTurn">Red</span></div>
-        <div style="margin-top:10px" class="controls">
-          <button id="rollBtn" class="btn">Roll Dice</button>
-          <button id="resetBtn" class="btn">Reset</button>
-          <button onclick="location.href='index.html'" class="btn">🏠 Home</button>
-        </div>
-        <div style="margin-top:12px" class="note">Lite rules: 1 token each player; roll 6 to move out of home; capture allowed.</div>
-      </div>
-    </div>
+<body>
+  <div class="wrap">
+    <h2>Real Ludo – coming in next update 🚧</h2>
+    <p>Full dice, safe cells, cuts & home rules — proper multiplayer.</p>
+    <a class="play-btn" href="index.html">Back to Home</a>
   </div>
-  <script src="ludo.js"></script>
 </body>
 </html>
