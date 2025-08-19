@@ -1,27 +1,35 @@
-<!doctype html>
-<html lang="hi">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Snake — GameZone</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snake</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .wrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:14px}
+  canvas{background:#0b1624;border:1px solid #21456f;border-radius:10px}
+  .pad{display:grid;grid-template-columns:60px 60px 60px;gap:10px;margin-top:6px}
+  .btn{background:#163055;border:1px solid #2c5e9f;border-radius:10px;color:#eaf3ff;
+       padding:10px 0;text-align:center;font-weight:700}
+  .btn:active{transform:scale(.98)}
+  .row{display:flex;gap:10px}
+  .score{color:#a7c3ff;margin-top:6px}
+</style>
 </head>
 <body>
-  <div class="page">
-    <a class="back" href="index.html">← Home</a>
-    <h2>🐍 Snake</h2>
-    <div class="snake-wrap">
-      <canvas id="snake" width="420" height="420"></canvas>
-      <div class="score"><b>Score:</b> <span id="score">0</span></div>
-      <div class="controls">
-        <span></span><button class="btn" id="up">↑</button><span></span>
-        <button class="btn" id="left">←</button>
-        <button class="btn" id="down">↓</button>
-        <button class="btn" id="right">→</button>
-        <button class="btn" id="restart" style="grid-column:1/4">Restart</button>
-      </div>
-    </div>
+<div class="wrap">
+  <canvas id="board" width="360" height="360"></canvas>
+  <div class="score">Score: <span id="score">0</span></div>
+  <div class="row" style="gap:10px">
+    <a class="play-btn" href="#" id="restart">Restart</a>
+    <a class="play-btn" href="index.html">Home</a>
   </div>
-  <script src="snake.js"></script>
+
+  <!-- D-pad -->
+  <div class="pad">
+    <div></div><div class="btn" data-d="up">▲</div><div></div>
+    <div class="btn" data-d="left">◀</div><div class="btn" data-d="down">▼</div><div class="btn" data-d="right">▶</div>
+  </div>
+</div>
+<script src="snake.js"></script>
 </body>
 </html>
