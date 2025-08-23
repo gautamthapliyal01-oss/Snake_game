@@ -4,56 +4,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chess Game</title>
-
-  <!-- Chessboard.js CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css"/>
-
-  <!-- Chess.js and Chessboard.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
-
   <style>
     body {
-      background: #2c3e50;
-      color: white;
       font-family: Arial, sans-serif;
       text-align: center;
+      background: #f0f0f0;
       margin: 0;
       padding: 20px;
     }
+    h1 {
+      margin-bottom: 20px;
+    }
     #board {
-      width: 90vw;
-      max-width: 400px;
+      width: 400px;
       margin: auto;
     }
-    #status {
-      margin-top: 15px;
-      font-size: 18px;
-      font-weight: bold;
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      background: #333;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #555;
     }
   </style>
+  <!-- Chessboard.js and Chess.js CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css">
 </head>
 <body>
-  <h1>♟️ Play Chess</h1>
-  <div id="board"></div>
-  <p id="status">Game Loaded...</p>
 
+  <h1>♟️ Online Chess Game</h1>
+  <div id="board"></div>
+  <button onclick="resetGame()">♻️ Reset Game</button>
+  <p id="status"></p>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.13.4/chess.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
   <script>
     var board = null
     var game = new Chess()
 
     function onDragStart (source, piece) {
-      if (game.game_over()) return false
-      if (piece.search(/^b/) !== -1) return false  // only white player moves
-    }
-
-    function makeRandomMove () {
-      var possibleMoves = game.moves()
-      if (possibleMoves.length === 0) return
-
-      var randomIdx = Math.floor(Math.random() * possibleMoves.length)
-      game.move(possibleMoves[randomIdx])
-      board.position(game.fen())
+      if (game.game_over() || 
+          (game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+          (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+        return false
+      }
     }
 
     function onDrop (source, target) {
@@ -64,20 +65,45 @@
       })
 
       if (move === null) return 'snapback'
-      window.setTimeout(makeRandomMove, 500) // AI plays after 0.5s
+      updateStatus()
     }
 
     function onSnapEnd () {
       board.position(game.fen())
     }
 
-    board = Chessboard('board', {
+    function updateStatus () {
+      var status = ''
+
+      if (game.in_checkmate()) {
+        status = 'Game over, ' + (game.turn() === 'w' ? 'Black' : 'White') + ' wins by Checkmate!'
+      } else if (game.in_draw()) {
+        status = 'Game over, Draw!'
+      } else {
+        status = (game.turn() === 'w' ? 'White' : 'Black') + ' to move'
+        if (game.in_check()) {
+          status += ', ' + (game.turn() === 'w' ? 'White' : 'Black') + ' is in Check!'
+        }
+      }
+
+      document.getElementById('status').innerText = status
+    }
+
+    function resetGame () {
+      game.reset()
+      board.start()
+      updateStatus()
+    }
+
+    var config = {
       draggable: true,
       position: 'start',
       onDragStart: onDragStart,
       onDrop: onDrop,
       onSnapEnd: onSnapEnd
-    })
+    }
+    board = Chessboard('board', config)
+    updateStatus()
   </script>
 </body>
 </html>
